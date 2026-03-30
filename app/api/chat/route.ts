@@ -14,6 +14,7 @@ export async function POST(request: Request) {
   const body = (await request.json()) as ChatRequestBody;
   const model = process.env.OPENROUTER_MODEL || DEFAULT_MODEL;
   const safeMessages = Array.isArray(body?.messages) ? body.messages : [];
+  const model = process.env.OPENROUTER_MODEL || "mistralai/mistral-7b-instruct:free";
 
   const upstream = await fetch(OPENROUTER_URL, {
     method: "POST",
@@ -30,6 +31,7 @@ export async function POST(request: Request) {
       messages: [
         { role: "system", content: buildSystemPrompt() },
         ...safeMessages
+        ...body.messages
       ]
     })
   });
@@ -93,6 +95,28 @@ export async function POST(request: Request) {
             const trimmed = line.trim();
             if (!trimmed.startsWith("data:")) continue;
             pushTokenFromPayload(trimmed.replace("data:", "").trim());
+          }
+        }
+          const lines = buffer.split("\n");
+          buffer = lines.pop() || "";
+
+          for (const line of lines) {
+            if (!line.startsWith("data:")) continue;
+            const payload = line.replace("data:", "").trim();
+            if (!payload || payload === "[DONE]") continue;
+
+            try {
+              const json = JSON.parse(payload) as {
+                choices?: Array<{ delta?: { content?: string } }>;
+              };
+              const token = json.choices?.[0]?.delta?.content;
+
+              if (token) {
+                controller.enqueue(encoder.encode(token));
+              }
+            } catch {
+              // Skip malformed line chunks.
+            }
           }
         }
       } finally {

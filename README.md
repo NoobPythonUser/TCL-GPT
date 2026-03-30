@@ -23,6 +23,13 @@ OPENROUTER_MODEL=mistralai/mistral-7b-instruct:free
 - Never hardcode the key in client components or commit it to git.
 - This app already sends OpenRouter requests from `app/api/chat/route.ts` (server-side only), so the key is not exposed in browser code.
 
+Create `.env.local` in the project root:
+
+```bash
+OPENROUTER_API_KEY=your_openrouter_api_key_here
+OPENROUTER_MODEL=mistralai/mistral-7b-instruct:free
+```
+
 ## 3) Run locally
 
 ```bash

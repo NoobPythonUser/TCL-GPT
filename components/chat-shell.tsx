@@ -116,6 +116,7 @@ export function ChatShell() {
       if (!response.ok || !response.body) {
         const errorText = await response.text();
         throw new Error(errorText || "Failed to stream response");
+        throw new Error("Failed to stream response");
       }
 
       const reader = response.body.getReader();
@@ -159,6 +160,14 @@ export function ChatShell() {
                     content: errorMessage
                   }
                 : entry
+            messages: thread.messages.map((message) =>
+              message.id === assistantMessageId
+                ? {
+                    ...message,
+                    content:
+                      "I ran into an issue generating a response. Please try again or regenerate this reply."
+                  }
+                : message
             )
           };
         })
