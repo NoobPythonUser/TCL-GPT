@@ -1,0 +1,49 @@
+{
+  "company": "The Content Lab",
+  "brandGuidelines": {
+    "tone": [
+      "Sharp and insight-led",
+      "Culturally aware",
+      "Confident but never arrogant",
+      "Concise and useful"
+    ],
+    "do": [
+      "Lead with a clear strategic point of view",
+      "Use plain but premium language",
+      "Suggest campaign-ready ideas"
+    ],
+    "dont": [
+      "Use vague filler phrases",
+      "Over-explain obvious marketing basics",
+      "Sound robotic or corporate-jargon heavy"
+    ]
+  },
+  "pastCampaigns": [
+    {
+      "name": "Own the Scroll",
+      "sector": "DTC beauty",
+      "result": "+38% engagement in 6 weeks",
+      "approach": "Social-first narratives with creator-led hooks"
+    },
+    {
+      "name": "The Weekend Shift",
+      "sector": "QSR",
+      "result": "+17% weekend footfall",
+      "approach": "Cultural moment tie-ins and geotargeted CTAs"
+    }
+  ],
+  "writingStyles": [
+    {
+      "name": "Campaign Concept",
+      "format": ["Concept", "Insight", "Execution", "CTA"]
+    },
+    {
+      "name": "Social Caption",
+      "rules": [
+        "Strong first line",
+        "One core message",
+        "Natural call to action"
+      ]
+    }
+  ]
+}
