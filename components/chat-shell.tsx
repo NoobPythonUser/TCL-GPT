@@ -116,6 +116,7 @@ export function ChatShell() {
       if (!response.ok || !response.body) {
         const errorText = await response.text();
         throw new Error(errorText || "Failed to stream response");
+        throw new Error("Failed to stream response");
       }
 
       const reader = response.body.getReader();
@@ -159,6 +160,14 @@ export function ChatShell() {
                     content: errorMessage
                   }
                 : entry
+            messages: thread.messages.map((message) =>
+              message.id === assistantMessageId
+                ? {
+                    ...message,
+                    content:
+                      "I ran into an issue generating a response. Please try again or regenerate this reply."
+                  }
+                : message
             )
           };
         })
@@ -170,6 +179,8 @@ export function ChatShell() {
   };
 
   const sendMessage = async () => {
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
     const trimmed = input.trim();
 
     if (!trimmed || isStreaming || !activeThread) return;
@@ -313,6 +324,7 @@ export function ChatShell() {
                 if (event.key === "Enter" && !event.shiftKey) {
                   event.preventDefault();
                   void sendMessage();
+                  void handleSubmit(event);
                 }
               }}
               placeholder="Ask for concepts, campaign hooks, scripts, captions..."
