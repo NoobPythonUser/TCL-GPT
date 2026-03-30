@@ -114,6 +114,8 @@ export function ChatShell() {
       });
 
       if (!response.ok || !response.body) {
+        const errorText = await response.text();
+        throw new Error(errorText || "Failed to stream response");
         throw new Error("Failed to stream response");
       }
 
@@ -142,11 +144,22 @@ export function ChatShell() {
         );
       }
     } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "I ran into an issue generating a response. Please try again or regenerate this reply.";
       setThreads((previous) =>
         previous.map((thread) => {
           if (thread.id !== threadId) return thread;
           return {
             ...thread,
+            messages: thread.messages.map((entry) =>
+              entry.id === assistantMessageId
+                ? {
+                    ...entry,
+                    content: errorMessage
+                  }
+                : entry
             messages: thread.messages.map((message) =>
               message.id === assistantMessageId
                 ? {
