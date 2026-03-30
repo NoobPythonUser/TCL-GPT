@@ -178,6 +178,7 @@ export function ChatShell() {
     }
   };
 
+  const sendMessage = async () => {
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
     const trimmed = input.trim();
@@ -201,6 +202,11 @@ export function ChatShell() {
 
     setInput("");
     await streamAssistantResponse(activeThread.id, nextMessages);
+  };
+
+  const handleSubmit = async (event: FormEvent) => {
+    event.preventDefault();
+    await sendMessage();
   };
 
   const handleRegenerate = async () => {
@@ -317,6 +323,7 @@ export function ChatShell() {
               onKeyDown={(event) => {
                 if (event.key === "Enter" && !event.shiftKey) {
                   event.preventDefault();
+                  void sendMessage();
                   void handleSubmit(event);
                 }
               }}

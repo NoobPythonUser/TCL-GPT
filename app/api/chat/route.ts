@@ -128,6 +128,7 @@ export async function POST(request: Request) {
   return new Response(stream, {
     headers: {
       "Content-Type": "text/plain; charset=utf-8",
+      "Cache-Control": "no-cache, no-transform"
       "Cache-Control": "no-cache, no-transform",
       Connection: "keep-alive"
     }
